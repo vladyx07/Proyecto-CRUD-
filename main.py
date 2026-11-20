@@ -1,3 +1,8 @@
+"""Código principal.
+
+del sistema crud.
+"""
+
 import tkinter as tk
 
 from interfaz import App
