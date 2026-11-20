@@ -1,3 +1,8 @@
+"""Lógica del.
+
+sistema crud.
+"""
+
 import json
 import os
 
@@ -11,6 +16,10 @@ class GestorEstudiantes:
     """Maneja la lista de estudiantes y el archivo JSON."""
 
     def __init__(self):
+        """Crea la lista.
+
+        de materias.
+        """
         self.estudiantes = []   # lista de diccionarios
         self.cargar()
 
@@ -31,7 +40,10 @@ class GestorEstudiantes:
 
     # ---------- CRUD ----------
     def buscar(self, id_iest):
-        """Regresa el diccionario del estudiante o None si no existe."""
+        """Regresa el diccionario del.
+
+        estudiante o None si no existe.
+        """
         for estudiante in self.estudiantes:
             if estudiante["id_iest"] == id_iest:
                 return estudiante
@@ -39,7 +51,9 @@ class GestorEstudiantes:
 
     def guardar(self, estudiante):
         """Crea el estudiante; si el ID ya existe, lo actualiza.
-        Regresa 'creado' o 'actualizado'."""
+
+        Regresa 'creado' o 'actualizado'.
+        """
         existente = self.buscar(estudiante["id_iest"])
         if existente:
             existente.update(estudiante)
