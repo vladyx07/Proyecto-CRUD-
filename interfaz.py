@@ -1,3 +1,8 @@
+"""Código de interfaz.
+
+del crud.
+"""
+
 import tkinter as tk
 from tkinter import ttk, messagebox
 
@@ -8,6 +13,8 @@ class App:
     """Ventana principal. Usa GestorEstudiantes para los datos."""
 
     def __init__(self, ventana):
+        """Crear ventana.
+        """
         self.ventana = ventana
         self.ventana.title("Registro de estudiantes IEST")
         self.gestor = GestorEstudiantes()
@@ -19,13 +26,19 @@ class App:
 
     # ---------- Construcción de la interfaz ----------
     def crear_formulario(self):
+        """Creación del.
+        
+        formulario.
+        """
         formulario = tk.Frame(self.ventana)
         formulario.pack(padx=20, pady=10)
 
         etiquetas = ["Nombre:", "ID IEST:", "Carrera:", "Semestre:", "Correo:"]
         self.entradas = []
         for fila, texto in enumerate(etiquetas):
-            tk.Label(formulario, text=texto).grid(row=fila, column=0, sticky="e", padx=5, pady=5)
+            tk.Label(
+                formulario, text=texto).grid(row=fila, 
+                column=0, sticky="e", padx=5, pady=5)
             entrada = tk.Entry(formulario, width=30)
             entrada.grid(row=fila, column=1, padx=5, pady=5)
             self.entradas.append(entrada)
@@ -34,17 +47,37 @@ class App:
          self.entrada_semestre, self.entrada_correo) = self.entradas
 
     def crear_botones(self):
+        """Los botones que.
+        
+        usaremos.
+        """
         botones = tk.Frame(self.ventana)
         botones.pack(pady=10)
-        tk.Button(botones, text="Guardar", width=12, command=self.guardar).grid(row=0, column=0, padx=5)
-        tk.Button(botones, text="Buscar", width=12, command=self.buscar).grid(row=0, column=1, padx=5)
-        tk.Button(botones, text="Eliminar", width=12, command=self.eliminar).grid(row=0, column=2, padx=5)
-        tk.Button(botones, text="Imprimir", width=12, command=self.imprimir).grid(row=0, column=3, padx=5)
-        tk.Button(botones, text="Limpiar", width=12, command=self.limpiar_campos).grid(row=0, column=4, padx=5)
+        tk.Button(botones, text="Guardar", 
+                  width=12, command=self.guardar).grid(
+            row=0, column=0, padx=5)
+        tk.Button(botones, text="Buscar",
+                  width=12, command=self.buscar).grid(
+            row=0, column=1, padx=5)
+        tk.Button(botones, text="Eliminar", 
+                  width=12, command=self.eliminar).grid(
+            row=0, column=2, padx=5)
+        tk.Button(botones, text="Imprimir",
+                  width=12, command=self.imprimir).grid(
+            row=0, column=3, padx=5)
+        tk.Button(botones, text="Limpiar",
+                  width=12, command=self.limpiar_campos).grid(
+            row=0, column=4, padx=5)
 
     def crear_tabla(self):
+        """Creación.
+        
+        de tabla.
+        """
         columnas = ("nombre", "id_iest", "carrera", "semestre", "correo")
-        self.tabla = ttk.Treeview(self.ventana, columns=columnas, show="headings", height=8)
+        self.tabla = ttk.Treeview(
+            self.ventana, columns=columnas,
+            show="headings", height=8)
         encabezados = ["Nombre", "ID IEST", "Carrera", "Semestre", "Correo"]
         anchos = [150, 80, 150, 70, 180]
         for col, texto, ancho in zip(columnas, encabezados, anchos):
@@ -64,10 +97,12 @@ class App:
             "correo": self.entrada_correo.get().strip(),
         }
         if "" in datos.values():
-            messagebox.showwarning("Datos incompletos", "Llena todos los campos.")
+            messagebox.showwarning(
+                "Datos incompletos", "Llena todos los campos.")
             return None
         if not datos["semestre"].isdigit():
-            messagebox.showwarning("Dato inválido", "El semestre debe ser un número.")
+            messagebox.showwarning("Dato inválido",
+                                   "El semestre debe ser un número.")
             return None
         if "@" not in datos["correo"]:
             messagebox.showwarning("Dato inválido", "El correo no es válido.")
@@ -75,6 +110,10 @@ class App:
         return datos
 
     def llenar_campos(self, estudiante):
+        """LLenado de.
+        
+        datos.
+        """
         self.limpiar_campos()
         self.entrada_nombre.insert(0, estudiante["nombre"])
         self.entrada_id.insert(0, estudiante["id_iest"])
@@ -83,6 +122,10 @@ class App:
         self.entrada_correo.insert(0, estudiante["correo"])
 
     def limpiar_campos(self):
+        """Borra los datos.
+        
+        de los campos.
+        """
         for entrada in self.entradas:
             entrada.delete(0, tk.END)
         self.entrada_nombre.focus()
@@ -92,11 +135,15 @@ class App:
         for fila in self.tabla.get_children():
             self.tabla.delete(fila)
         for e in self.gestor.estudiantes:
-            self.tabla.insert("", tk.END, values=(e["nombre"], e["id_iest"], e["carrera"],
-                                                  e["semestre"], e["correo"]))
+            self.tabla.insert("", tk.END, values=(e["nombre"],
+                                                  e["id_iest"], e["carrera"], e["semestre"], e["correo"]))
 
     # ---------- Acciones de los botones ----------
     def guardar(self):
+        """Guarda los.
+        
+        datos.
+        """
         datos = self.leer_campos()
         if datos is None:
             return
@@ -106,23 +153,34 @@ class App:
         messagebox.showinfo("Éxito", f"Estudiante {accion} correctamente.")
 
     def buscar(self):
+        """Busca por.
+        
+        número de ID.
+        """
         id_iest = self.entrada_id.get().strip()
         if id_iest == "":
             messagebox.showwarning("Sin ID", "Escribe el ID IEST a buscar.")
             return
         estudiante = self.gestor.buscar(id_iest)
         if estudiante is None:
-            messagebox.showerror("No encontrado", "No existe un estudiante con ese ID IEST.")
+            messagebox.showerror("No encontrado",
+                                 "No existe un estudiante con ese ID IEST.")
         else:
             self.llenar_campos(estudiante)
 
     def eliminar(self):
+        """Elimina los.
+        
+        datos.
+        """
         id_iest = self.entrada_id.get().strip()
         if id_iest == "":
-            messagebox.showwarning("Sin ID", "Escribe o selecciona el ID IEST a eliminar.")
+            messagebox.showwarning("Sin ID",
+                                   "Escribe o selecciona el ID IEST a eliminar.")
             return
         if self.gestor.buscar(id_iest) is None:
-            messagebox.showerror("No encontrado", "No existe un estudiante con ese ID IEST.")
+            messagebox.showerror("No encontrado",
+                                 "No existe un estudiante con ese ID IEST.")
             return
         if messagebox.askyesno("Confirmar", "¿Eliminar al estudiante?"):
             self.gestor.eliminar(id_iest)
@@ -131,8 +189,13 @@ class App:
             messagebox.showinfo("Éxito", "Estudiante eliminado.")
 
     def imprimir(self):
+        """Genera el archivo.
+        
+        con los datos.
+        """
         if not self.gestor.estudiantes:
-            messagebox.showwarning("Sin datos", "No hay estudiantes para imprimir.")
+            messagebox.showwarning("Sin datos",
+                                   "No hay estudiantes para imprimir.")
             return
         ruta = self.gestor.imprimir()
         messagebox.showinfo("Impreso", f"Archivo generado:\n{ruta}")
