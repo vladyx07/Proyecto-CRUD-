@@ -1,7 +1,4 @@
-"""Código de interfaz.
-
-del crud.
-"""
+"""Código de interfaz del crud."""
 
 import tkinter as tk
 from tkinter import ttk, messagebox
@@ -13,7 +10,7 @@ class App:
     """Ventana principal. Usa GestorEstudiantes para los datos."""
 
     def __init__(self, ventana):
-        """Crear ventana"""
+        """Crear ventana."""
         self.ventana = ventana
         self.ventana.title("Registro de estudiantes IEST")
         self.gestor = GestorEstudiantes()
@@ -25,9 +22,7 @@ class App:
 
     # ---------- Construcción de la interfaz ----------
     def crear_formulario(self):
-        """Creación del.
-        formulario.
-        """
+        """Creación formulario."""
         formulario = tk.Frame(self.ventana)
         formulario.pack(padx=20, pady=10)
 
@@ -36,7 +31,8 @@ class App:
         for fila, texto in enumerate(etiquetas):
             tk.Label(
                 formulario, text=texto).grid(row=fila,
-                column=0, sticky="e", padx=5, pady=5)
+                                             column=0, sticky="e",
+                                             padx=5, pady=5)
             entrada = tk.Entry(formulario, width=30)
             entrada.grid(row=fila, column=1, padx=5, pady=5)
             self.entradas.append(entrada)
@@ -45,9 +41,7 @@ class App:
          self.entrada_semestre, self.entrada_correo) = self.entradas
 
     def crear_botones(self):
-        """Los botones que.
-        usaremos.
-        """
+        """Botones a usar."""
         botones = tk.Frame(self.ventana)
         botones.pack(pady=10)
         tk.Button(botones, text="Guardar",
@@ -67,9 +61,7 @@ class App:
             row=0, column=4, padx=5)
 
     def crear_tabla(self):
-        """Creación.      
-        de tabla.
-        """
+        """Creación de tabla."""
         columnas = ("nombre", "id_iest", "carrera", "semestre", "correo")
         self.tabla = ttk.Treeview(
             self.ventana, columns=columnas,
@@ -106,9 +98,7 @@ class App:
         return datos
 
     def llenar_campos(self, estudiante):
-        """Llenado de.    
-        datos.
-        """
+        """Llenado de datos."""
         self.limpiar_campos()
         self.entrada_nombre.insert(0, estudiante["nombre"])
         self.entrada_id.insert(0, estudiante["id_iest"])
@@ -117,9 +107,7 @@ class App:
         self.entrada_correo.insert(0, estudiante["correo"])
 
     def limpiar_campos(self):
-        """Borra los datos.     
-        de los campos.
-        """
+        """Borra los datos."""
         for entrada in self.entradas:
             entrada.delete(0, tk.END)
         self.entrada_nombre.focus()
@@ -135,9 +123,7 @@ class App:
 
     # ---------- Acciones de los botones ----------
     def guardar(self):
-        """Guarda los.    
-        datos.
-        """
+        """Guarda datos."""
         datos = self.leer_campos()
         if datos is None:
             return
@@ -147,9 +133,7 @@ class App:
         messagebox.showinfo("Éxito", f"Estudiante {accion} correctamente.")
 
     def buscar(self):
-        """Busca por.
-        número de ID.
-        """
+        """Busca por ID."""
         id_iest = self.entrada_id.get().strip()
         if id_iest == "":
             messagebox.showwarning("Sin ID", "Escribe el ID IEST a buscar.")
@@ -162,14 +146,11 @@ class App:
             self.llenar_campos(estudiante)
 
     def eliminar(self):
-        """Elimina los.    
-        datos.
-        """
+        """Elimina datos."""
         id_iest = self.entrada_id.get().strip()
         if id_iest == "":
             messagebox.showwarning("Sin ID",
-                                   "Escribe o selecciona el
-                                   ID IEST a eliminar.")
+                                   "Escribe o selecciona el ID a eliminar.")
             return
         if self.gestor.buscar(id_iest) is None:
             messagebox.showerror("No encontrado",
@@ -182,9 +163,7 @@ class App:
             messagebox.showinfo("Éxito", "Estudiante eliminado.")
 
     def imprimir(self):
-        """Genera el archivo.   
-        con los datos.
-        """
+        """Genera el archivo."""
         if not self.gestor.estudiantes:
             messagebox.showwarning("Sin datos",
                                    "No hay estudiantes para imprimir.")
