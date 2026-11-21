@@ -13,8 +13,7 @@ class App:
     """Ventana principal. Usa GestorEstudiantes para los datos."""
 
     def __init__(self, ventana):
-        """Crear ventana.
-        """
+        """Crear ventana"""
         self.ventana = ventana
         self.ventana.title("Registro de estudiantes IEST")
         self.gestor = GestorEstudiantes()
@@ -27,7 +26,6 @@ class App:
     # ---------- Construcción de la interfaz ----------
     def crear_formulario(self):
         """Creación del.
-        
         formulario.
         """
         formulario = tk.Frame(self.ventana)
@@ -37,7 +35,7 @@ class App:
         self.entradas = []
         for fila, texto in enumerate(etiquetas):
             tk.Label(
-                formulario, text=texto).grid(row=fila, 
+                formulario, text=texto).grid(row=fila,
                 column=0, sticky="e", padx=5, pady=5)
             entrada = tk.Entry(formulario, width=30)
             entrada.grid(row=fila, column=1, padx=5, pady=5)
@@ -48,18 +46,17 @@ class App:
 
     def crear_botones(self):
         """Los botones que.
-        
         usaremos.
         """
         botones = tk.Frame(self.ventana)
         botones.pack(pady=10)
-        tk.Button(botones, text="Guardar", 
+        tk.Button(botones, text="Guardar",
                   width=12, command=self.guardar).grid(
             row=0, column=0, padx=5)
         tk.Button(botones, text="Buscar",
                   width=12, command=self.buscar).grid(
             row=0, column=1, padx=5)
-        tk.Button(botones, text="Eliminar", 
+        tk.Button(botones, text="Eliminar",
                   width=12, command=self.eliminar).grid(
             row=0, column=2, padx=5)
         tk.Button(botones, text="Imprimir",
@@ -70,8 +67,7 @@ class App:
             row=0, column=4, padx=5)
 
     def crear_tabla(self):
-        """Creación.
-        
+        """Creación.      
         de tabla.
         """
         columnas = ("nombre", "id_iest", "carrera", "semestre", "correo")
@@ -110,8 +106,7 @@ class App:
         return datos
 
     def llenar_campos(self, estudiante):
-        """LLenado de.
-        
+        """Llenado de.    
         datos.
         """
         self.limpiar_campos()
@@ -122,8 +117,7 @@ class App:
         self.entrada_correo.insert(0, estudiante["correo"])
 
     def limpiar_campos(self):
-        """Borra los datos.
-        
+        """Borra los datos.     
         de los campos.
         """
         for entrada in self.entradas:
@@ -136,12 +130,12 @@ class App:
             self.tabla.delete(fila)
         for e in self.gestor.estudiantes:
             self.tabla.insert("", tk.END, values=(e["nombre"],
-                                                  e["id_iest"], e["carrera"], e["semestre"], e["correo"]))
+                                                  e["id_iest"], e["carrera"],
+                                                  e["semestre"], e["correo"]))
 
     # ---------- Acciones de los botones ----------
     def guardar(self):
-        """Guarda los.
-        
+        """Guarda los.    
         datos.
         """
         datos = self.leer_campos()
@@ -154,7 +148,6 @@ class App:
 
     def buscar(self):
         """Busca por.
-        
         número de ID.
         """
         id_iest = self.entrada_id.get().strip()
@@ -169,14 +162,14 @@ class App:
             self.llenar_campos(estudiante)
 
     def eliminar(self):
-        """Elimina los.
-        
+        """Elimina los.    
         datos.
         """
         id_iest = self.entrada_id.get().strip()
         if id_iest == "":
             messagebox.showwarning("Sin ID",
-                                   "Escribe o selecciona el ID IEST a eliminar.")
+                                   "Escribe o selecciona el
+                                   ID IEST a eliminar.")
             return
         if self.gestor.buscar(id_iest) is None:
             messagebox.showerror("No encontrado",
@@ -189,8 +182,7 @@ class App:
             messagebox.showinfo("Éxito", "Estudiante eliminado.")
 
     def imprimir(self):
-        """Genera el archivo.
-        
+        """Genera el archivo.   
         con los datos.
         """
         if not self.gestor.estudiantes:
